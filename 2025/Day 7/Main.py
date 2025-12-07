@@ -1,3 +1,4 @@
+from functools import cache
 from pathlib import Path
 
 
@@ -34,4 +35,28 @@ def solve_part_one():
     return split_count
 
 
+def solve_part_two():
+    for x in range(W):
+        if GRID[0][x] == 'S':
+            return count_timelines_BT(x, 1)
+    raise ValueError
+
+
+@cache
+def count_timelines_BT(x: int, y: int) -> int:
+    # Backtracking
+    if y == H:
+        return 1
+    count = 0
+    if GRID[y][x] == '.':
+        count += count_timelines_BT(x, y+1)
+    if GRID[y][x] == '^':
+        if (0 < x) and GRID[y][x-1] == '.':
+            count += count_timelines_BT(x-1, y+1)
+        if (x+1 < W) and GRID[y][x+1] == '.':
+            count += count_timelines_BT(x+1, y+1)
+    return count
+
+
 print(solve_part_one())
+print(solve_part_two())
