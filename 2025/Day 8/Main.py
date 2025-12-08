@@ -31,6 +31,7 @@ def main():
             E.append((dist, i, j))
 
     print(solve_part_one())
+    print(solve_part_two())
 
 
 # Disjoint set via union-find
@@ -64,4 +65,17 @@ def solve_part_one():
     return reduce(mul, [v for k, v in counter.most_common(3)])
 
 
+def solve_part_two():
+    E.sort(reverse=True)
+    while True:
+        _, u, v = E.pop()
+        union(u, v)
+
+        # find 로 경로압축 및 랭크 최신화 해주면서,
+        # 중복 없이 개수 세기
+        if len(set(map(find, range(len(V))))) == 1:
+            return V[u][0] * V[v][0]
+
+
+IS_EXAMPLE = False
 main()
