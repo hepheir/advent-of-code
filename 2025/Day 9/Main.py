@@ -22,7 +22,13 @@ def main():
 
 
 def solve_part_one(X: list[int], Y: list[int]) -> int:
-    pass
+    areas = []
+    for j in range(len(X)):
+        for i in range(j):
+            w = abs(X[i]-X[j])+1
+            h = abs(Y[i]-Y[j])+1
+            areas.append(w * h)
+    return max(areas)
 
 
 def solve_part_two(X: list[int], Y: list[int]) -> int:
