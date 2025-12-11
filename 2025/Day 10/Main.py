@@ -2,36 +2,32 @@ from collections import defaultdict, deque
 from pathlib import Path
 from sys import maxsize
 
-IS_EXAMPLE = True
+EXAMPLE_INPUT_FILE = Path(__file__).parent.resolve() / 'data' / 'example.in'
+PUZZLE_INPUT_FILE = Path(__file__).parent.resolve() / 'data' / 'puzzle.in'
 
 
 def main():
-    if IS_EXAMPLE:
-        INPUT_FILE = Path(__file__).parent.resolve() / 'data' / 'example.in'
-    else:
-        INPUT_FILE = Path(__file__).parent.resolve() / 'data' / 'puzzle.in'
+    input_file = PUZZLE_INPUT_FILE
 
-    MACHINE = []
-    BUTTONS = []
-    JOLTAGE = []
+    raw_machines = []
+    raw_buttons = []
+    raw_joltages = []
 
-    N = 0
-    for line in INPUT_FILE.read_text().splitlines():
+    for line in input_file.read_text().splitlines():
         tokens = line.split()
-        MACHINE.append(tokens[0])
-        BUTTONS.append(tokens[1:-1])
-        JOLTAGE.append(tokens[-1])
-        N += 1
+        raw_machines.append(tokens[0])
+        raw_buttons.append(tokens[1:-1])
+        raw_joltages.append(tokens[-1])
 
-    print(solve_part_one(N, MACHINE, BUTTONS, JOLTAGE))
-    print(solve_part_two(N, MACHINE, BUTTONS, JOLTAGE))
+    print(solve_part_one(raw_machines, raw_buttons, raw_joltages))
+    print(solve_part_two(raw_machines, raw_buttons, raw_joltages))
 
 
-def solve_part_one(n: int, machine: list[str], buttons: list[list[str]], joltage: list[str]) -> int:
+def solve_part_one(raw_machines: list[str], raw_buttons: list[list[str]], raw_joltages: list[str]) -> int:
     grand_sum = 0
-    for i in range(n):
-        machine_mask = machine_to_bitmask(machine[i])
-        buttons_mask = list(map(buttons_to_bitmask, buttons[i]))
+    for raw_machine, raw_button in zip(raw_machines, raw_buttons):
+        machine_mask = machine_to_bitmask(raw_machine)
+        buttons_mask = list(map(buttons_to_bitmask, raw_button))
         grand_sum += solve_part_one_util(machine_mask, buttons_mask)
     return grand_sum
 
@@ -54,7 +50,7 @@ def solve_part_one_util(machine_bits: int, buttons_bits: list[int]) -> int:
     raise ValueError
 
 
-def solve_part_two(n: int, machine: list[str], buttons: list[list[str]], joltage: list[str]) -> int:
+def solve_part_two(raw_machines: list[str], raw_buttons: list[list[str]], raw_joltages: list[str]) -> int:
     pass
 
 
